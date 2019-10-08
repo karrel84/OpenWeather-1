@@ -65,7 +65,7 @@ class DetailActivity : BaseActivity() {
                 imageIcon.playAnimation()
             })
 
-            checkedTime.observe(this@DetailActivity, Observer {
+            getCheckedTime().observe(this@DetailActivity, Observer {
                 textCurrentTime.text = it
             })
 

@@ -1,6 +1,7 @@
 package com.karrel.openweather.viewmodel
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
 import com.karrel.openweather.base.BaseViewModel
@@ -24,9 +25,23 @@ class CurrentViewModel : BaseViewModel() {
         it.weather[0].icon.toLottieIcon()
     }
 
-    val checkedTime: LiveData<String> = Transformations.map(weatherRepo.currentCityData) {
-        it.dt.toAmPm()
+    private val checkedTime: MutableLiveData<String> = MutableLiveData()
+
+    fun setCheckedTime(time:String) {
+
+        checkedTime.value = time
     }
+
+
+    fun getCheckedTime(): LiveData<String> {
+
+//        Transformations.map(weatherRepo.currentCityData) {
+//            it.main.temp.KtoC()
+//        }
+
+        return checkedTime
+    }
+
 
     val currentTemp: LiveData<String> = Transformations.map(weatherRepo.currentCityData) {
         it.main.temp.KtoC()
