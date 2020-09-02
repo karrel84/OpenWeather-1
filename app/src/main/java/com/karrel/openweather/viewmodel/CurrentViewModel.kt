@@ -27,6 +27,8 @@ class CurrentViewModel : BaseViewModel() {
 
     private val checkedTime: MutableLiveData<String> = MutableLiveData()
 
+    val userName = "rell"
+
     fun setCheckedTime(time:String) {
 
         checkedTime.value = time

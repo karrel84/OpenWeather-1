@@ -2,10 +2,14 @@ package com.karrel.openweather.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.karrel.openweather.R
 import com.karrel.openweather.base.BaseActivity
+import com.karrel.openweather.databinding.ActivityWeatherListBinding
 import com.karrel.openweather.view.adapter.CurrentListAdapter
 import com.karrel.openweather.viewmodel.CurrentViewModel
 import kotlinx.android.synthetic.main.activity_weather_list.*
@@ -13,17 +17,21 @@ import kotlinx.android.synthetic.main.content_weather_list.*
 
 class ListActivity : BaseActivity() {
 
+    private lateinit var binding: ActivityWeatherListBinding
+
+    private val viewModel by lazy { ViewModelProviders.of(this).get(CurrentViewModel::class.java) }
+
     private val listAdapter: CurrentListAdapter by lazy {
         CurrentListAdapter { cityId, cityName ->
             DetailActivity.startActivity(this, cityId, cityName)
         }
     }
 
-    private val viewModel by lazy { CurrentViewModel() }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_weather_list)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_weather_list)
+        binding.viewmodel = viewModel
+
         setSupportActionBar(toolbar)
 
         setupRecyclerView()
@@ -35,13 +43,15 @@ class ListActivity : BaseActivity() {
     }
 
     private fun setupSwipeRefresh() {
-        swiperRefresh.setColorSchemeResources(
-            R.color.colorPrimary,
-            R.color.colorAccent
-        )
+        binding.weatherList.swiperRefresh.apply {
+            setColorSchemeResources(
+                R.color.colorPrimary,
+                R.color.colorAccent
+            )
 
-        swiperRefresh.setOnRefreshListener {
-            viewModel.loadWeatherListData()
+            setOnRefreshListener {
+                viewModel.loadWeatherListData()
+            }
         }
     }
 
@@ -66,10 +76,10 @@ class ListActivity : BaseActivity() {
     }
 
     override fun showProgressDialog() {
-//        imageProgress.visibility = View.VISIBLE
+        binding.weatherList.imageProgress.visibility = View.VISIBLE
     }
 
     override fun hideProgressDialog() {
-        swiperRefresh.isRefreshing = false
+        binding.weatherList.swiperRefresh.isRefreshing = false
     }
 }

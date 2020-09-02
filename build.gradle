@@ -6,8 +6,9 @@ buildscript {
         google()
         jcenter()
         maven { url 'https://maven.fabric.io/public' }
-        
+
     }
+
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
@@ -16,7 +17,6 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
-
 
 
 allprojects {
